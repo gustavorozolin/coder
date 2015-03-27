@@ -8,11 +8,11 @@ public interface ProjetoService {
  
     ProjetoDTO create(ProjetoDTO todo);
  
-    ProjetoDTO delete(String id);
+    ProjetoDTO delete(Long id);
  
     List<ProjetoDTO> findAll();
  
-    ProjetoDTO findById(String id);
+    ProjetoDTO findById(Long id);
  
     ProjetoDTO update(ProjetoDTO todo);
 }

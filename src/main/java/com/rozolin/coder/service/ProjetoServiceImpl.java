@@ -1,6 +1,6 @@
 package com.rozolin.coder.service;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,64 +14,67 @@ import com.rozolin.coder.repository.ProjetoRepository;
 @Service
 @Transactional
 public class ProjetoServiceImpl implements ProjetoService {
- 
-    private final ProjetoRepository projetoRepository;
- 
-    @Autowired
-    ProjetoServiceImpl(ProjetoRepository projetoRepository) {
-        this.projetoRepository = projetoRepository;
-    }
- 
-    @Override
-    public ProjetoDTO create(ProjetoDTO dto) {
-        
-    	persisted = repository.save(persisted);
-        return convertToDTO(persisted);
-    }
- 
-    @Override
-    public ProjetoDTO delete(String id) {
-        Todo deleted = findTodoById(id);
-        repository.delete(deleted);
-        return convertToDTO(deleted);
-    }
- 
-    @Override
-    public List<ProjetoDTO> findAll() {
-          List<ProjetoEntity> findAll = this.projetoRepository.findAll();
-		
-       
-        return convertToDTOs(todoEntries);
-    }
- 
-    private List<ProjetoDTO> convertToDTOs(List<ProjetoEntity> models) {
-        return models.stream()
-                .map(this::convertToDTO)
-                .collect(toList());
-    }
- 
-    @Override
-    public TodoDTO findById(String id) {
-        Todo found = findTodoById(id);
-        return convertToDTO(found);
-    }
- 
-    @Override
-    public TodoDTO update(TodoDTO todo) {
-        Todo updated = findTodoById(todo.getId());
-        updated.update(todo.getTitle(), todo.getDescription());
-        updated = repository.save(updated);
-        return convertToDTO(updated);
-    }
- 
- 
-    private ProjetoDTO convertToDTO(Todo model) {
-    	ProjetoDTO dto = new ProjetoDTO();
- 
-        dto.setId(model.getId());
-        dto.setTitle(model.getTitle());
-        dto.setDescription(model.getDescription());
- 
-        return dto;
-    }
+	@Autowired
+	private ProjetoRepository projetoRepository;
+	
+
+	@Override
+	public ProjetoDTO create(ProjetoDTO dto) {
+		ProjetoEntity entity = convertToEntity(dto);
+		entity = this.projetoRepository.save(entity);
+		return convertToDTO(entity);
+	}
+
+	@Override
+	public ProjetoDTO delete(Long id) {
+		ProjetoEntity entity = this.projetoRepository.findOne(id);
+		this.projetoRepository.delete(entity);
+		return convertToDTO(entity);
+	}
+
+	@Override
+	public List<ProjetoDTO> findAll() {
+		List<ProjetoEntity> findAll = this.projetoRepository.findAll();
+		List<ProjetoDTO> dtos = new ArrayList<ProjetoDTO>();
+		for (ProjetoEntity projetoEntity : findAll) {
+			dtos.add(convertToDTO(projetoEntity));
+		}
+		return dtos;
+	}
+
+	@Override
+	public ProjetoDTO findById(Long id) {
+		ProjetoEntity entity = this.projetoRepository.findOne(id);
+		return convertToDTO(entity);
+	}
+
+	@Override
+	public ProjetoDTO update(ProjetoDTO dto) {
+		ProjetoEntity entity = convertToEntity(dto);
+		entity = this.projetoRepository.save(entity);
+		return convertToDTO(entity);
+	}
+
+	private ProjetoDTO convertToDTO(ProjetoEntity entity) {
+		ProjetoDTO dto = new ProjetoDTO();
+		dto.setId(entity.getId());
+		dto.setNome(entity.getNome());
+		dto.setDtCadastro(entity.getDtCadastro());
+		dto.setVersao(entity.getVersao());
+		return dto;
+	}
+
+	private ProjetoEntity convertToEntity(ProjetoDTO dto) {
+		ProjetoEntity entity = null;
+		if (dto.getId() == null) {
+			entity = new ProjetoEntity();
+		} else {
+			entity = this.projetoRepository.findOne(dto.getId());
+		}
+		entity.setNome(dto.getNome());
+		entity.setVersao(dto.getVersao());
+		entity.setDtCadastro(dto.getDtCadastro());
+
+		return entity;
+	}
 }

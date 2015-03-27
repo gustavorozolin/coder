@@ -21,7 +21,7 @@ public class ClasseEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 
 	@Column(name = "nome")
 	private String nome;
@@ -58,11 +58,11 @@ public class ClasseEntity extends BaseEntity {
 				+ projetoEntity + "]";
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

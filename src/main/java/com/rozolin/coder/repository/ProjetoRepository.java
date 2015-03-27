@@ -1,7 +1,6 @@
 package com.rozolin.coder.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.repository.Repository;
 
@@ -13,7 +12,7 @@ public interface ProjetoRepository extends Repository<ProjetoEntity, Long> {
 	 
     List<ProjetoEntity> findAll();
  
-    Optional<ProjetoEntity> findOne(Long id);
+    ProjetoEntity findOne(Long id);
  
     ProjetoEntity save(ProjetoEntity entity);
 }
