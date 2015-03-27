@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.rozolin.coder.entity.dto.ProjetoDTO;
+
 @Entity
 @Table(name = "projeto")
 public class ProjetoEntity extends BaseEntity {
@@ -46,6 +48,15 @@ public class ProjetoEntity extends BaseEntity {
 	@Override
 	public String toString() {
 		return "ProjetoEntity [id=" + id + ", nome=" + nome + "]";
+	}
+	
+	public ProjetoDTO getDTO(){
+		ProjetoDTO dto = new ProjetoDTO();
+		dto.setId(this.getId());
+		dto.setNome(this.getNome());
+		dto.setDtCadastro(this.getDtCadastro());
+		dto.setVersao(this.getVersao());
+		return dto;
 	}
 
 	public Long getId() {

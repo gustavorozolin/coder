@@ -14,22 +14,22 @@ import com.rozolin.coder.repository.ProjetoRepository;
 @Service
 @Transactional
 public class ProjetoServiceImpl implements ProjetoService {
+
 	@Autowired
 	private ProjetoRepository projetoRepository;
-	
 
 	@Override
 	public ProjetoDTO create(ProjetoDTO dto) {
 		ProjetoEntity entity = convertToEntity(dto);
 		entity = this.projetoRepository.save(entity);
-		return convertToDTO(entity);
+		return entity.getDTO();
 	}
 
 	@Override
 	public ProjetoDTO delete(Long id) {
 		ProjetoEntity entity = this.projetoRepository.findOne(id);
 		this.projetoRepository.delete(entity);
-		return convertToDTO(entity);
+		return entity.getDTO();
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 		List<ProjetoEntity> findAll = this.projetoRepository.findAll();
 		List<ProjetoDTO> dtos = new ArrayList<ProjetoDTO>();
 		for (ProjetoEntity projetoEntity : findAll) {
-			dtos.add(convertToDTO(projetoEntity));
+			dtos.add(projetoEntity.getDTO());
 		}
 		return dtos;
 	}
@@ -45,23 +45,14 @@ public class ProjetoServiceImpl implements ProjetoService {
 	@Override
 	public ProjetoDTO findById(Long id) {
 		ProjetoEntity entity = this.projetoRepository.findOne(id);
-		return convertToDTO(entity);
+		return entity.getDTO();
 	}
 
 	@Override
 	public ProjetoDTO update(ProjetoDTO dto) {
 		ProjetoEntity entity = convertToEntity(dto);
 		entity = this.projetoRepository.save(entity);
-		return convertToDTO(entity);
-	}
-
-	private ProjetoDTO convertToDTO(ProjetoEntity entity) {
-		ProjetoDTO dto = new ProjetoDTO();
-		dto.setId(entity.getId());
-		dto.setNome(entity.getNome());
-		dto.setDtCadastro(entity.getDtCadastro());
-		dto.setVersao(entity.getVersao());
-		return dto;
+		return entity.getDTO();
 	}
 
 	private ProjetoEntity convertToEntity(ProjetoDTO dto) {
